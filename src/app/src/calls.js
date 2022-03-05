@@ -1,8 +1,11 @@
-export const getTodos =  () => {
-    return fetch(`http://localhost:8000/todos/`)
-    .then(res => res.json())
-    .then(data => data)
-    .catch(err => err) 
+export const getTodos =  async () => {
+    try {
+    const res = await fetch(`http://localhost:8000/todos/`)
+    const data = await res.json()
+    return data
+  } catch (err) {
+    return err
+  } 
 }
 
 export const addTodo = (task) => {

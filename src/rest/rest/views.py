@@ -13,7 +13,6 @@ mongo_uri = 'mongodb://' + \
 db = MongoClient(mongo_uri)['test_db']
 
 items_db = db['todos']
-items_db.delete_many({})
 
 
 class TodoListView(APIView):
@@ -40,7 +39,13 @@ class TodoListView(APIView):
         item = {
             'name': res['name']
         }
-        items_db.insert_one(item)
-        return Response({
-            'status': 'Done'
-        }, status=status.HTTP_200_OK)
+
+        try:
+            items_db.insert_one(item)
+            return Response({
+                'status': 'Done'
+            }, status=status.HTTP_200_OK)
+        except:
+            return Response({
+                'status': '400'
+            }, status=status.HTTP_400_BAD_REQUEST)
